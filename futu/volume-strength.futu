@@ -1,0 +1,17 @@
+{https://www.youtube.com/watch?v=HojcCBnWHS4}
+
+QJJ:=(VOL / (((HIGH - LOW) * 2) - ABS((CLOSE - OPEN))));
+XVL:=(IF((CLOSE > OPEN),(QJJ * (HIGH - LOW)),IF((CLOSE < OPEN),(QJJ * ((HIGH - OPEN) + (CLOSE - LOW))),(VOL / 2))) + IF((CLOSE > OPEN),(0 - (QJJ * ((HIGH - CLOSE) + (OPEN - LOW)))),IF((CLOSE < OPEN),(0 - (QJJ * (HIGH - LOW))),(0 - (VOL / 2)))));
+HSL:=((XVL / 20) / 1.15);
+攻击流量:=(((HSL * 0.55) + (REF(HSL,1) * 0.33)) + (REF(HSL,2) * 0.22));
+LLJX:EMA(攻击流量,3),NODRAW;
+力度:(HSL / 1000),NODRAW;
+ZJLL:=REF(LLJX,1);
+QZJJ:=(((LLJX - ZJLL) / ZJLL) * 100);
+资金流量:LLJX+LLJX*0.03,NODRAW;
+流量增幅:IF(((LLJX > 0) AND (ZJLL < 0)),ABS(QZJJ),IF((((LLJX < 0) AND (ZJLL < 0)) AND (LLJX < ZJLL)),(0 - QZJJ),QZJJ)),NODRAW;
+流量递增:REF(LLJX,1)>REF(LLJX,2) AND LLJX>REF(LLJX,1) AND LLJX>0,COLOR0000FF,POINTDOT;
+STICKLINE(((HSL * 4) > 0),((HSL * 4) * 1.5),0,1,0),COLOR00FFFF;
+STICKLINE(((HSL * 4) < 0),((HSL * 4) * 1.5),0,1,0),COLORFFFF00;
+STICKLINE((LLJX > 0),LLJX*10,0,0.8,0),COLORFF00FF;{粉红色}
+STICKLINE((LLJX < 0),LLJX*10,0,0.8,0),COLORFF0000;{红色}
